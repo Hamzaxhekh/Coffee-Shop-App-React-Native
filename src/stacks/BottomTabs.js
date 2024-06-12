@@ -89,6 +89,7 @@ const BottomTabs = () => {
 
 const styles = StyleSheet.create({
   tabBarStyle: {
+  
     height: 80,
     position: 'absolute',
     backgroundColor: COLORS.primaryBlackRGBA,
