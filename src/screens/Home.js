@@ -197,7 +197,14 @@ export default function Home({navigation}) {
           keyExtractor={item => item.id}
           renderItem={({item}) => {
             return (
-              <TouchableOpacity onPress={() => {navigation.navigate('Details')}}>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('Details', {
+                    index: item.index,
+                    id: item.id,
+                    type: item.type,
+                  });
+                }}>
                 <CoffeeCard
                   id={item.id}
                   index={item.index}
@@ -227,7 +234,14 @@ export default function Home({navigation}) {
           keyExtractor={item => item.id}
           renderItem={({item}) => {
             return (
-              <TouchableOpacity onPress={() => {navigation.navigate('Details')}}>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('Details', {
+                    index: item.index,
+                    id: item.id,
+                    type: item.type,
+                  });
+                }}>
                 <CoffeeCard
                   id={item.id}
                   index={item.index}
