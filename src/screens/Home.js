@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -22,8 +23,10 @@ import {
 import HeaderBar from '../components/HeaderBar';
 import CustomIcon from '../components/CustomICon';
 import CoffeeCard from '../components/CoffeeCard';
-
+import RBSheet from 'react-native-raw-bottom-sheet';
+import NetworkBottomSheet from '../components/NetworkBottomSheet';
 export default function Home({navigation}) {
+  const refRBSheet = useRef();
   const getCategoriesFromData = data => {
     let temp = {};
     for (let i = 0; i < data.length; i++) {
@@ -49,6 +52,8 @@ export default function Home({navigation}) {
 
   const CoffeeList = useStore(state => state.CoffeeList);
   const BeanList = useStore(state => state.BeanList);
+  const addToCart = useStore(state => state.addToCart);
+  const calculateCartPrice = useStore(state => state.calculateCartPrice);
   const [categories, setCategories] = useState(
     getCategoriesFromData(CoffeeList),
   );
@@ -86,6 +91,33 @@ export default function Home({navigation}) {
     setSortedCoffee([...CoffeeList]);
     setSearchText('');
   };
+  const addToCartHandler = ({
+    id,
+    index,
+    name,
+    roasted,
+    imagelink_square,
+    special_ingredient,
+    type,
+    prices,
+  }) => {
+    addToCart({
+      id,
+      index,
+      name,
+      roasted,
+      imagelink_square,
+      special_ingredient,
+      type,
+      prices,
+    });
+    calculateCartPrice();
+    ToastAndroid.showWithGravity(
+      `${name} is Added to Cart`,
+      ToastAndroid.SHORT,
+      ToastAndroid.CENTER,
+    );
+  };
   return (
     <View style={styles.ScreenContainer}>
       <StatusBar backgroundColor={COLORS.primaryBlackHex} />
@@ -104,7 +136,7 @@ export default function Home({navigation}) {
         <View style={styles.InputContainerComponent}>
           <TouchableOpacity
             onPress={() => {
-              searchCoffee(searchText);
+              refRBSheet.current.open();
             }}>
             <CustomIcon
               style={styles.InputIcon}
@@ -215,6 +247,7 @@ export default function Home({navigation}) {
                   special_ingredient={item.special_ingredient}
                   average_rating={item.average_rating}
                   price={item.prices[2]}
+                  buttonPressHandler={addToCartHandler}
                 />
               </TouchableOpacity>
             );
@@ -258,6 +291,26 @@ export default function Home({navigation}) {
           }}
         />
       </ScrollView>
+      <RBSheet
+        ref={refRBSheet}
+        height={250}
+        customStyles={{
+          wrapper: {
+            backgroundColor: 'transparent',
+          },
+          draggableIcon: {
+            backgroundColor: '#000',
+          },
+        }}
+        customModalProps={{
+          animationType: 'slide',
+          statusBarTranslucent: true,
+        }}
+        customAvoidingViewProps={{
+          enabled: false,
+        }}>
+        <NetworkBottomSheet />
+      </RBSheet>
     </View>
   );
 }

@@ -70,7 +70,7 @@ const BottomTabs = () => {
           ),
         }}></Tab.Screen>
       <Tab.Screen
-        name="Order History"
+        name="OrderHistory"
         component={OrderHistory}
         options={{
           tabBarIcon: ({focused, color, size}) => (

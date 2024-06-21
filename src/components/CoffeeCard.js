@@ -57,11 +57,23 @@ const CoffeeCard = ({
         <Text style={styles.CardPriceCurrency}>
           $ <Text style={styles.CardPrice}>{price.price}</Text>
         </Text>
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity
+          onPress={() => {
+            buttonPressHandler({
+              id,
+              index,
+              type,
+              roasted,
+              imagelink_square,
+              name,
+              special_ingredient,
+              prices: [{...price, quantity: 1}],
+            });
+          }}>
           <View
             style={[styles.IconBG, {backgroundColor: COLORS.primaryOrangeHex}]}>
             <CustomIcon
-              name={COLORS.primaryOrangeHex}
+              name={'add'}
               color={COLORS.primaryWhiteHex}
               size={FONTSIZE.size_10}
             />
